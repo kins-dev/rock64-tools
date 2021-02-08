@@ -58,11 +58,11 @@ ADDRESS = 0x27
 LCD_CLEARDISPLAY = 0x01
 LCD_RETURNHOME = 0x02
 LCD_ENTRYMODESET = 0x04
-LCD_DISPLAYCONTROL = 0x08
-LCD_CURSORSHIFT = 0x10
-LCD_FUNCTIONSET = 0x20
-LCD_SETCGRAMADDR = 0x40
-LCD_SETDDRAMADDR = 0x80
+LCD_DISPLAY_CONTROL = 0x08
+LCD_CURSOR_SHIFT = 0x10
+LCD_FUNCTION_SET = 0x20
+LCD_SET_CG_RAM_ADDR = 0x40
+LCD_SET_DD_RAM_ADDR = 0x80
 
 # flags for display entry mode
 LCD_ENTRYRIGHT = 0x00
@@ -103,18 +103,18 @@ Rs = 0b00000001  # Register select bit
 
 class lcd:
     # initializes objects and lcd
-    def __init__(self):
-        self.lcd_device = i2c_device(ADDRESS)
-        self.backlight = 0x0
+    def __init__(self, addr=0x27):
+        self.lcd_device = i2c_device(addr)
+        self.backlight_val = 0x0
 
         self.lcd_write(0x03)
         self.lcd_write(0x03)
         self.lcd_write(0x03)
         self.lcd_write(0x02)
 
-        self.lcd_write(LCD_FUNCTIONSET | LCD_2LINE |
+        self.lcd_write(LCD_FUNCTION_SET | LCD_2LINE |
                        LCD_5_BY_8_DOTS | LCD_4BITMODE)
-        self.lcd_write(LCD_DISPLAYCONTROL | LCD_DISPLAY_ON)
+        self.lcd_write(LCD_DISPLAY_CONTROL | LCD_DISPLAY_ON)
         self.lcd_write(LCD_CLEARDISPLAY)
         self.lcd_write(LCD_ENTRYMODESET | LCD_ENTRYLEFT)
         sleep(0.2)
@@ -122,13 +122,13 @@ class lcd:
     # clocks EN to latch command
 
     def lcd_strobe(self, data):
-        self.lcd_device.write_cmd(data | En | self.backlight)
+        self.lcd_device.write_cmd(data | En | self.backlight_val)
         sleep(.0005)
-        self.lcd_device.write_cmd(((data & ~En) | self.backlight))
+        self.lcd_device.write_cmd(((data & ~En) | self.backlight_val))
         sleep(.0001)
 
     def lcd_write_four_bits(self, data):
-        self.lcd_device.write_cmd(data | self.backlight)
+        self.lcd_device.write_cmd(data | self.backlight_val)
         self.lcd_strobe(data)
 
     # write a command to lcd
@@ -166,10 +166,10 @@ class lcd:
     # keeps that setting for following writes
     def backlight(self, state):  # for state, 1 = on, 0 = off
         if state == 1:
-            self.backlight = LCD_BACKLIGHT
+            self.backlight_val = LCD_BACKLIGHT
             self.lcd_device.write_cmd(LCD_BACKLIGHT)
         elif state == 0:
-            self.backlight = LCD_NO_BACKLIGHT
+            self.backlight_val = LCD_NO_BACKLIGHT
             self.lcd_device.write_cmd(LCD_NO_BACKLIGHT)
 
     # add custom characters (0 - 7)
