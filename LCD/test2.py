@@ -2,15 +2,16 @@
 import RPi_I2C_driver
 from time import *
 
-mylcd = RPi_I2C_driver.lcd()
+my_lcd = RPi_I2C_driver.lcd()
 # test 2
-mylcd.lcd_display_string("RPi I2C test", 1)
-mylcd.lcd_display_string(" Custom chars", 2)
-mylcd.backlight(0)
+my_lcd.backlight(1)
+my_lcd.lcd_display_string("RPi I2C test", 1)
+my_lcd.lcd_display_string(" Custom chars", 2)
 
 sleep(2) # 2 sec delay
+my_lcd.backlight(0)
 
-mylcd.lcd_clear()
+my_lcd.lcd_clear()
 # let's define a custom icon, consisting of 6 individual characters
 # 3 chars in the first row and 3 chars in the second row
 fontdata1 = [
@@ -31,28 +32,29 @@ fontdata1 = [
 ]
 
 # Load logo chars (fontdata1)
-mylcd.lcd_load_custom_chars(fontdata1)
+my_lcd.lcd_load_custom_chars(fontdata1)
 
 
 # Write first three chars to row 1 directly
-mylcd.lcd_write(0x80)
-mylcd.lcd_write_char(0)
-mylcd.lcd_write_char(1)
-mylcd.lcd_write_char(2)
+my_lcd.lcd_write(0x80)
+my_lcd.lcd_write_char(0)
+my_lcd.lcd_write_char(1)
+my_lcd.lcd_write_char(2)
 # Write next three chars to row 2 directly
-mylcd.lcd_write(0xC0)
-mylcd.lcd_write_char(3)
-mylcd.lcd_write_char(4)
-mylcd.lcd_write_char(5)
+my_lcd.lcd_write(0xC0)
+my_lcd.lcd_write_char(3)
+my_lcd.lcd_write_char(4)
+my_lcd.lcd_write_char(5)
+my_lcd.backlight(1)
 sleep(2)
 
-mylcd.lcd_clear()
+my_lcd.lcd_clear()
 
-mylcd.lcd_display_string_pos("Testing",1,1) # row 1, column 1
+my_lcd.lcd_display_string_pos("Testing",1,1) # row 1, column 1
 sleep(1)
-mylcd.lcd_display_string_pos("Testing",2,3) # row 2, column 3
+my_lcd.lcd_display_string_pos("Testing",2,3) # row 2, column 3
 sleep(1)
-mylcd.lcd_clear()
+my_lcd.lcd_clear()
 
 # Now let's define some more custom characters
 fontdata2 = [
@@ -73,13 +75,13 @@ fontdata2 = [
 ]
 
 # Load logo chars from the second set
-mylcd.lcd_load_custom_chars(fontdata2)
+my_lcd.lcd_load_custom_chars(fontdata2)
 
 block = chr(255) # block character, built-in
 
 # display two blocks in columns 5 and 6 (i.e. AFTER pos. 4) in row 1
 # first draw two blocks on 5th column (cols 5 and 6), starts from 0
-mylcd.lcd_display_string_pos(block * 2,1,4)
+my_lcd.lcd_display_string_pos(block * 2,1,4)
 
 # 
 pauza = 0.2 # define duration of sleep(x)
@@ -87,48 +89,48 @@ pauza = 0.2 # define duration of sleep(x)
 # now draw cust. chars starting from col. 7 (pos. 6)
 
 pos = 6
-mylcd.lcd_display_string_pos(chr(1),1,6)
+my_lcd.lcd_display_string_pos(chr(1),1,6)
 sleep(pauza)
 
-mylcd.lcd_display_string_pos(chr(2),1,pos)
+my_lcd.lcd_display_string_pos(chr(2),1,pos)
 sleep(pauza)
 
-mylcd.lcd_display_string_pos(chr(3),1,pos)
+my_lcd.lcd_display_string_pos(chr(3),1,pos)
 sleep(pauza)
 
-mylcd.lcd_display_string_pos(chr(4),1,pos)
+my_lcd.lcd_display_string_pos(chr(4),1,pos)
 sleep(pauza)
 
-mylcd.lcd_display_string_pos(block,1,pos)
+my_lcd.lcd_display_string_pos(block,1,pos)
 sleep(pauza)
 
 # and another one, same as above, 1 char-space to the right
 pos = pos +1 # increase column by one
 
-mylcd.lcd_display_string_pos(chr(1),1,pos)
+my_lcd.lcd_display_string_pos(chr(1),1,pos)
 sleep(pauza)
-mylcd.lcd_display_string_pos(chr(2),1,pos)
+my_lcd.lcd_display_string_pos(chr(2),1,pos)
 sleep(pauza)
-mylcd.lcd_display_string_pos(chr(3),1,pos)
+my_lcd.lcd_display_string_pos(chr(3),1,pos)
 sleep(pauza)
-mylcd.lcd_display_string_pos(chr(4),1,pos)
+my_lcd.lcd_display_string_pos(chr(4),1,pos)
 sleep(pauza)
-mylcd.lcd_display_string_pos(block,1,pos)
+my_lcd.lcd_display_string_pos(block,1,pos)
 sleep(pauza)
 
 
 #
 # now again load first set of custom chars - smiley
-mylcd.lcd_load_custom_chars(fontdata1)
+my_lcd.lcd_load_custom_chars(fontdata1)
 
-mylcd.lcd_display_string_pos(chr(0),1,9)
-mylcd.lcd_display_string_pos(chr(1),1,10)
-mylcd.lcd_display_string_pos(chr(2),1,11)
-mylcd.lcd_display_string_pos(chr(3),2,9)
-mylcd.lcd_display_string_pos(chr(4),2,10)
-mylcd.lcd_display_string_pos(chr(5),2,11)
+my_lcd.lcd_display_string_pos(chr(0),1,9)
+my_lcd.lcd_display_string_pos(chr(1),1,10)
+my_lcd.lcd_display_string_pos(chr(2),1,11)
+my_lcd.lcd_display_string_pos(chr(3),2,9)
+my_lcd.lcd_display_string_pos(chr(4),2,10)
+my_lcd.lcd_display_string_pos(chr(5),2,11)
 
 sleep(2)
-mylcd.lcd_clear()
+my_lcd.lcd_clear()
 sleep(1)
-mylcd.backlight(0)
+my_lcd.backlight(0)
