@@ -50,10 +50,6 @@ class i2c_device:
     def read_block_data(self, cmd):
         return self.bus.read_block_data(self.addr, cmd)
 
-
-# LCD Address
-ADDRESS = 0x27
-
 # commands
 LCD_CLEARDISPLAY = 0x01
 LCD_RETURNHOME = 0x02
