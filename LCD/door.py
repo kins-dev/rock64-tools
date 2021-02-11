@@ -39,10 +39,8 @@
 import socket
 import optparse
 import threading
-import time
-import sys
 import RPi_I2C_driver
-from datetime import date, datetime
+from datetime import datetime
 
 
 BUFFER_SIZE = 1024
@@ -57,6 +55,8 @@ my_lcd = RPi_I2C_driver.lcd()
 my_id = 0
 
 def backlight_off(id):
+    global my_id
+    global my_lcd
     if(my_id == id):
         day = datetime.now().strftime("%-m/%-d/%y")
         tme = datetime.now().strftime("%-I:%M:%S %p")
@@ -69,7 +69,8 @@ def backlight_off(id):
         print("id changed, not messing with the backlight")
 
 def udp_client( server_ip, server_port):
-    cur_id = my_id
+    global my_id
+    global my_lcd
     print("================================================================================")
     print("UDP Client")
     print("================================================================================")
@@ -80,27 +81,25 @@ def udp_client( server_ip, server_port):
     print(tme)
     my_lcd.lcd_display_string(day, 1)
     my_lcd.lcd_display_string(tme, 2)
-    my_lcd.backlight(1)
-    my_timer = threading.Timer(5, backlight_off, cur_id)
+    my_timer = threading.Timer(5, backlight_off, my_id)
     my_timer.start()
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.sendto(bytes(START_MSG, "utf-8"), (server_ip, server_port))
 
     while True:
         print("================================================================================")
+        my_lcd.backlight(1)
         data = int(s.recv(BUFFER_SIZE).decode('utf-8'))
         my_id += 1
         my_id %= 100
-        cur_id = my_id
         day = datetime.now().strftime("%-m/%-d/%y")
         tme = datetime.now().strftime("%-I:%M:%S %p")
         print(day)
         print(tme)
-        my_timer = threading.Timer(30, backlight_off, cur_id)
+        my_timer = threading.Timer(30, backlight_off, my_id)
         my_timer.start()
         my_lcd.lcd_display_string(day, 1)
         my_lcd.lcd_display_string(tme, 2)
-        my_lcd.backlight(1)
         print("Command from Server:")
         if data == 0:
             print("LED OFF")
