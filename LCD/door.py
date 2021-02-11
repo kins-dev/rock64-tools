@@ -64,7 +64,7 @@ def udp_client( server_ip, server_port):
     while True:
         print("================================================================================")
         day = datetime.now().strftime("%-m/%-d/%y")
-        tme = datetime.now().strftime("%-I:%M%S %p")
+        tme = datetime.now().strftime("%-I:%M:%S %p")
         data = int(s.recv(BUFFER_SIZE).decode('utf-8'))
         print(day)
         print(tme)
