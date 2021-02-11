@@ -63,11 +63,14 @@ def udp_client( server_ip, server_port):
 
     while True:
         print("================================================================================")
-        now = datetime.now().strftime("%-m/%-d/%y %-I:%M%S %p")
+        day = datetime.now().strftime("%-m/%-d/%y")
+        tme = datetime.now().strftime("%-I:%M%S %p")
         data = int(s.recv(BUFFER_SIZE).decode('utf-8'))
-        print(now)
+        print(day)
+        print(tme)
         my_lcd = RPi_I2C_driver.lcd()
-        my_lcd.lcd_display_string(now)
+        my_lcd.lcd_display_string(day, 1)
+        my_lcd.lcd_display_string(tme, 2)
         my_lcd.backlight(data)
         print("Command from Server:")
         if data == 0:
