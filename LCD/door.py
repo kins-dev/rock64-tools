@@ -41,7 +41,7 @@ import optparse
 import time
 import sys
 import RPi_I2C_driver
-
+from datetime import date, datetime
 
 
 BUFFER_SIZE = 1024
@@ -63,8 +63,11 @@ def udp_client( server_ip, server_port):
 
     while True:
         print("================================================================================")
+        now = datetime.now().strftime("%-m/%-d/%y %-I:%M%S %p")
         data = int(s.recv(BUFFER_SIZE).decode('utf-8'))
+        print(now)
         my_lcd = RPi_I2C_driver.lcd()
+        my_lcd.lcd_display_string(now)
         my_lcd.backlight(data)
         print("Command from Server:")
         if data == 0:
