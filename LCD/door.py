@@ -80,7 +80,7 @@ def udp_client( server_ip, server_port):
     my_lcd.lcd_display_string(day, 1)
     my_lcd.lcd_display_string(tme, 2)
     my_lcd.backlight(1)
-    my_timer = threading.Timer(30, backlight_off)
+    my_timer = threading.Timer(30, backlight_off, my_id)
     my_timer.start()
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.sendto(bytes(START_MSG, "utf-8"), (server_ip, server_port))
