@@ -63,8 +63,8 @@ def backlight_off(id):
         print("backlight off at")
         print(day)
         print(tme)
-        my_lcd = RPi_I2C_driver.lcd()
         my_lcd.backlight(0)
+        print("================================================================================")
     else:
         print("id changed, not messing with the backlight")
 
